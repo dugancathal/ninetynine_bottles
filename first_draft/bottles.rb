@@ -1,8 +1,13 @@
-class Bottles < Struct.new(:num_bottles)
+class Bottles
+  attr_accessor :starting_num, :ending_num
   include Enumerable
+  def initialize(starting_num=99, ending_num=0)
+    @starting_num = starting_num
+    @ending_num = ending_num
+  end
 
   def each(&block)
-    num_bottles.downto(0).map do |n|
+    starting_num.downto(ending_num).map do |n|
       verse = verse_for(n)
       block.call(verse)
       verse
@@ -13,14 +18,18 @@ class Bottles < Struct.new(:num_bottles)
     each {|i| i}
   end
 
+  def verses(starting_num, ending_num=0)
+    self.starting_num = starting_num
+    self.ending_num = ending_num
+    to_a
+  end
+
   private
 
   def verse_for(n)
     [
-      wall_line(n) + ",",
-      count_part(n),
-      take_line(n) + ",",
-      wall_line(next_verse_number(n)),
+      wall_line(n).capitalize + ", " + count_part(n) + ".",
+      take_line(n).capitalize + ", " + wall_line(next_verse_number(n)) + ".",
     ].join("\n")
   end
 
@@ -31,21 +40,21 @@ class Bottles < Struct.new(:num_bottles)
   def take_line(n)
     case
     when n > 1 then
-      "Take one down, pass it around"
+      "Take one down and pass it around"
     when last_bottle?(n) then
-      "Take it down, pass it around"
+      "Take it down and pass it around"
     when n == 0 then
       "Go to the store and buy some more"
     end
   end
 
   def count_part(n)
-    count_word = n == 0 ? 'No more' : n
+    count_word = n == 0 ? 'no more' : n
     "#{count_word} #{pluralize("bottle", n)} of beer"
   end
 
   def next_verse_number(n)
-    no_bottles?(n) ? n - 1 : num_bottles
+    no_bottles?(n) ? n - 1 : starting_num
   end
 
   def no_bottles?(n)
@@ -65,8 +74,8 @@ if $0 == __FILE__
   if ARGV.include?('-n')
     ARGV.delete('-n')
     num_bottles = ARGV[0]
-    puts Bottles.new(num_bottles).to_a
+    puts Bottles.new(num_bottles).to_a.join("\n\n")
   else
-    puts Bottles.new(99).to_a
+    puts Bottles.new(99).to_a.join("\n\n")
   end
 end
