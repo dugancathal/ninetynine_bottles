@@ -49,8 +49,12 @@ class Bottles
   end
 
   def count_part(n)
-    count_word = n == 0 ? 'no more' : n
-    "#{count_word} #{pluralize("bottle", n)} of beer"
+    count_word = case n
+      when 0 then "no more #{pluralize("bottle", n)}"
+      when 6 then '1 six-pack'
+      else "#{n} #{pluralize("bottle", n)}"
+    end
+    "#{count_word} of beer"
   end
 
   def next_verse_number(n)
