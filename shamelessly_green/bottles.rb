@@ -16,23 +16,23 @@ class Bottles
   end
 
   private
-  def container(size)
-    size != 1 ? "bottles" : "bottle"
+  def container(number)
+    number == 1 ? "bottle" : "bottles"
   end
 
-  def pronoun(size)
-    size != 1 ? "one" : "it"
+  def pronoun(number)
+    number == 1 ? "it" : "one"
   end
 
   def quantity(number)
-    number > 0 ? "#{number}" : "no more"
+    number == 0 ? "no more" : "#{number}"
   end
 
-  def obtain_bottles(size)
-    size == 0 ? "Go to the store and buy some more, " : "Take #{pronoun(size)} down and pass it around, "
+  def obtain_bottles(number)
+    number == 0 ? "Go to the store and buy some more, " : "Take #{pronoun(number)} down and pass it around, "
   end
 
   def successor(number)
-    number > 0 ? number - 1 : 99
+    number == 0 ? 99 : number - 1
   end
 end
