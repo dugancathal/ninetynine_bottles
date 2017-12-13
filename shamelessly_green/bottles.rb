@@ -9,30 +9,33 @@ class Bottles
 
 
   def verse(number)
-    "#{quantity(number).capitalize} #{container(number)} of beer on the wall, " +
-      "#{quantity(number)} #{container(number)} of beer.\n" +
-      obtain_bottles(number) +
-      "#{quantity(successor(number))} #{container(successor(number))} of beer on the wall.\n"
+    bottle_number = BottleNumber.new(number)
+    next_bottle_number = BottleNumber.new(bottle_number.successor)
+    "#{bottle_number.quantity.capitalize} #{bottle_number.container} of beer on the wall, " +
+      "#{bottle_number.quantity} #{bottle_number.container} of beer.\n" +
+      bottle_number.obtain_bottles +
+      "#{next_bottle_number.quantity} #{next_bottle_number.container} of beer on the wall.\n"
   end
+end
 
-  private
-  def container(number)
+class BottleNumber < Struct.new(:number)
+  def container
     number == 1 ? "bottle" : "bottles"
   end
 
-  def pronoun(number)
+  def pronoun
     number == 1 ? "it" : "one"
   end
 
-  def quantity(number)
+  def quantity
     number == 0 ? "no more" : "#{number}"
   end
 
-  def obtain_bottles(number)
-    number == 0 ? "Go to the store and buy some more, " : "Take #{pronoun(number)} down and pass it around, "
+  def obtain_bottles
+    number == 0 ? "Go to the store and buy some more, " : "Take #{pronoun} down and pass it around, "
   end
 
-  def successor(number)
+  def successor
     number == 0 ? 99 : number - 1
   end
 end
