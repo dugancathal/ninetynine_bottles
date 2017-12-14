@@ -22,6 +22,7 @@ class BottleNumber < Struct.new(:number)
     case number
     when 0 then BottleNumber0
     when 1 then BottleNumber1
+    when 6 then BottleNumber6
     else BottleNumber
     end.new(number)
   end
@@ -72,5 +73,15 @@ class BottleNumber0 < BottleNumber
 
   def successor
     BottleNumber.for(99)
+  end
+end
+
+class BottleNumber6 < BottleNumber
+  def quantity
+    1
+  end
+
+  def container
+    'six-pack'
   end
 end
